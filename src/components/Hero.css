@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────────
-   Home hero: full-viewport video backdrop with a three-way
+   Home hero: full-viewport photo backdrop with a three-way
    division switcher (Formwork / Travels / Properties).
 
    Fixed composition measured from a 1353 x 1163 reference.
@@ -38,16 +38,24 @@
 }
 
 /* ───── Backdrop ───── */
-.sh .sky {
-  position: absolute; inset: 0; z-index: 0;
-  background-size: cover; background-position: center; background-repeat: no-repeat;
+.sh .sky { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.sh .sky img {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover;
+  display: block; opacity: 0; transition: opacity .45s linear;
 }
-.sh .sky video {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  display: block; opacity: 0; transition: opacity .22s linear;
+.sh .sky img.is-active { opacity: 1; animation: sky-drift 18s cubic-bezier(.22, 1, .36, 1) both; }
+/* Photos are bright and busy; the scrim keeps the white type readable. */
+.sh .sky::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(4, 16, 31, .62) 0%, rgba(4, 16, 31, .38) 45%, rgba(4, 16, 31, .66) 100%),
+    radial-gradient(ellipse at 50% 42%, rgba(4, 16, 31, .28), transparent 70%);
 }
-.sh .sky video.is-active { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .sh .sky video { display: none; } }
+@keyframes sky-drift { from { transform: scale(1.08); } to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .sh .sky img { transition: none; }
+  .sh .sky img.is-active { animation: none; }
+}
 
 .sh .ui { position: absolute; inset: 0; z-index: 3; }
 
@@ -58,7 +66,12 @@
   pointer-events: auto; /* .copy disables pointers wholesale */
   transition: transform .45s cubic-bezier(.22, 1, .36, 1);
 }
-.sh .planet img { display: none; width: 100%; height: auto; max-width: none; }
+/* Round photo thumbnails, 97% of the slot, matching the old planet sphere size */
+.sh .planet img {
+  display: none; width: 97%; height: auto; aspect-ratio: 1; max-width: none; margin: 1.5%;
+  object-fit: cover; border-radius: 50%;
+  box-shadow: 0 0 0 calc(3 * var(--u)) rgba(255, 255, 255, .85), 0 calc(10 * var(--u)) calc(30 * var(--u)) rgba(2, 8, 20, .5);
+}
 .sh .planet img.is-shown { display: block; }
 .sh .planet:hover { transform: scale(1.045); }
 .sh .planet:active { transform: scale(.99); }

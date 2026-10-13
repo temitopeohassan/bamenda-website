@@ -1,19 +1,19 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import './Hero.css';
-
-const CDN = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/';
 
 // Featured division on load is ORDER[0]; the rest fill the left / right slots in order.
 const ORDER = ['formwork', 'travels', 'properties'];
 
+// Photos live in public/hero (Unsplash License). `focus` is the backdrop's
+// object-position, so narrow screens keep the subject in frame.
 const DIVISIONS = {
   formwork: {
     name: 'FORMWORK',
     title: 'Bamenda Formworks',
-    clip: `${CDN}hf_20260827_202422_3ffb4889-c520-432d-8458-038009eb40df.mp4`,
-    still: `${CDN}hf_20260827_202133_508c64b8-a31e-4290-bdfc-1187df70e0a6.png`,
-    cutout: `${CDN}hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png`,
+    image: '/hero/formwork.jpg', // Julia Taubitz, unsplash.com/photos/OKZRUxijthA
+    thumb: '/hero/formwork-thumb.jpg',
+    focus: '50% 60%',
     lede: [
       'Formwork systems, engineering support and site execution for residential, commercial',
       'and infrastructure projects. Tell us about your site and we’ll scope it with you.',
@@ -23,9 +23,9 @@ const DIVISIONS = {
   travels: {
     name: 'TRAVELS',
     title: 'Bamenda Travels',
-    clip: `${CDN}hf_20260827_202422_b211cd74-013b-4dd3-bfd0-64491d8696fa.mp4`,
-    still: `${CDN}hf_20260827_202133_cf55d1d8-7b59-4a64-80da-d72052ae974e.png`,
-    cutout: `${CDN}hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png`,
+    image: '/hero/travels.jpg', // Ben (@bendp), unsplash.com/photos/UH7OPfi-gw8
+    thumb: '/hero/travels-thumb.jpg',
+    focus: '72% 45%',
     lede: [
       'Educational tours, family holidays and group trips, designed around your goals,',
       'dates and budget. Tell us where you’d like to go and we’ll plan the rest.',
@@ -35,9 +35,9 @@ const DIVISIONS = {
   properties: {
     name: 'PROPERTIES',
     title: 'Bamenda Properties',
-    clip: `${CDN}hf_20260827_202422_51eae59a-2459-4c84-907c-cc5edfe5fea7.mp4`,
-    still: `${CDN}hf_20260827_202133_0ba6de7c-285d-43dc-b7ab-8c54c73707cb.png`,
-    cutout: `${CDN}hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png`,
+    image: '/hero/properties.jpg', // Michael Brown, unsplash.com/photos/G48h926L2qo
+    thumb: '/hero/properties-thumb.jpg',
+    focus: '55% 50%',
     lede: [
       'Looking to rent, lease or buy? Tell us what you need and we’ll source the right',
       'property for you across Lagos, Abuja and beyond.',
@@ -144,48 +144,11 @@ function Nav() {
 export default function Hero() {
   const [featured, setFeatured] = useState(ORDER[0]);
   const stageRef = useRef(null);
-  const videos = useRef({});
   useEntrance();
 
   const rest = ORDER.filter((k) => k !== featured);
   const slots = { l: rest[0], r: rest[1] };
   const current = DIVISIONS[featured];
-
-  // First-use fetch for a clip that only carries data-src.
-  const warm = (key) => {
-    const v = videos.current[key];
-    if (v && !v.getAttribute('src') && v.dataset.src) {
-      v.preload = 'auto';
-      v.src = v.dataset.src;
-      v.load();
-    }
-  };
-
-  // Runs before paint so the clip swap lands in the same frame as the copy swap.
-  useLayoutEffect(() => {
-    ORDER.forEach((key) => {
-      const v = videos.current[key];
-      if (!v) return;
-      if (key === featured) {
-        if (!v.getAttribute('src') && v.dataset.src) v.src = v.dataset.src;
-        const p = v.play();
-        if (p && p.catch) p.catch(() => {});
-      } else {
-        v.pause();
-      }
-    });
-  }, [featured]);
-
-  // After first paint, pull the remaining clips down in idle time.
-  useEffect(() => {
-    const warmAll = () => ORDER.forEach(warm);
-    if ('requestIdleCallback' in window) {
-      const id = requestIdleCallback(warmAll, { timeout: 4000 });
-      return () => cancelIdleCallback(id);
-    }
-    const id = setTimeout(warmAll, 2500);
-    return () => clearTimeout(id);
-  }, []);
 
   const show = (next) => {
     if (!DIVISIONS[next] || next === featured) return;
@@ -206,12 +169,10 @@ export default function Hero() {
         data-planet={key}
         aria-label={`Show ${DIVISIONS[key].title}`}
         onClick={() => show(key)}
-        onPointerEnter={() => warm(key)}
-        onFocus={() => warm(key)}
       >
-        {/* All cut-outs stay mounted; switching toggles a class, never img.src. */}
+        {/* All thumbnails stay mounted; switching toggles a class, never img.src. */}
         {ORDER.map((k) => (
-          <img key={k} data-planet={k} alt="" src={DIVISIONS[k].cutout} className={k === key ? 'is-shown' : undefined} />
+          <img key={k} data-planet={k} alt="" src={DIVISIONS[k].thumb} className={k === key ? 'is-shown' : undefined} />
         ))}
       </button>
     );
@@ -219,28 +180,18 @@ export default function Hero() {
 
   return (
     <section className="sh" ref={stageRef} aria-label="Bamenda companies">
-      <div className="sky" style={{ backgroundImage: `url(${current.still})` }}>
+      {/* All backdrops stay mounted and crossfade on .is-active, so a switch never waits on a download. */}
+      <div className="sky" aria-hidden="true">
         {ORDER.map((k, i) => (
-          <video
+          <img
             key={k}
-            ref={(el) => {
-              if (el) {
-                el.muted = true;
-                el.setAttribute('muted', '');
-              }
-              videos.current[k] = el;
-            }}
             data-planet={k}
             className={k === featured ? 'is-active' : undefined}
-            autoPlay={i === 0}
-            muted
-            loop
-            playsInline
-            preload={i === 0 ? 'auto' : 'none'}
-            src={i === 0 ? DIVISIONS[k].clip : undefined}
-            data-src={DIVISIONS[k].clip}
-            poster={DIVISIONS[k].still}
-            aria-hidden="true"
+            src={DIVISIONS[k].image}
+            alt=""
+            decoding="async"
+            fetchpriority={i === 0 ? 'high' : 'low'}
+            style={{ objectPosition: DIVISIONS[k].focus }}
           />
         ))}
       </div>

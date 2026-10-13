@@ -16,16 +16,6 @@ export default function Home() {
     <>
       <Hero />
 
-      <div className="container">
-        {/* TODO: swap for real numbers once confirmed (projects, years, clients) */}
-        <div className="stats stats--below">
-          <div className="stat"><strong>3</strong><span>Specialist companies</span></div>
-          <div className="stat"><strong>Lagos · Abuja</strong><span>And across Nigeria</span></div>
-          <div className="stat"><strong>1</strong><span>Point of contact</span></div>
-          <div className="stat"><strong>100%</strong><span>Tailored to your brief</span></div>
-        </div>
-      </div>
-
       <section className="section" id="companies">
         <div className="container">
           <div className="section-head section-head--center">
