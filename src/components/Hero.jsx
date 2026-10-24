@@ -18,7 +18,7 @@ const DIVISIONS = {
       'Formwork systems, engineering support and site execution for residential, commercial',
       'and infrastructure projects. Tell us about your site and we’ll scope it with you.',
     ],
-    to: '/contact?division=formworks',
+    to: '/formworks/quote',
   },
   travels: {
     name: 'TRAVELS',

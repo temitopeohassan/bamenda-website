@@ -1,4 +1,4 @@
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { site, formspreeIds, whatsappLink } from '../config/site.js';
 import { Icon } from '../components/Icons.jsx';
 import { PageHero, usePageTitle } from '../components/Blocks.jsx';
@@ -7,7 +7,7 @@ import {
 } from '../components/FormParts.jsx';
 
 const DIVISION_OPTIONS = {
-  formworks: 'Bamenda Formworks (quote)',
+  formworks: 'Bamenda Formworks',
   properties: 'Bamenda Properties',
   travels: 'Bamenda Travels',
   general: 'General enquiry',
@@ -24,20 +24,17 @@ function ContactForm() {
   const [params] = useSearchParams();
   const preset = DIVISION_OPTIONS[params.get('division')] || '';
   const f = useEnquiryForm({
-    initial: { division: preset, name: '', company: '', email: '', phone: '', projectLocation: '', message: '', consent: false },
+    initial: { division: preset, name: '', company: '', email: '', phone: '', message: '', consent: false },
     formId: formspreeIds.contact,
     validate,
   });
   const { values: v, errors, bind } = f;
-  const isFormworks = v.division === DIVISION_OPTIONS.formworks;
 
   return (
     <>
       <PageHero eyebrow="Contact" title="Let’s talk." crumbs={[{ label: 'Contact' }]}>
         <p className="lead" style={{ color: 'rgba(255,255,255,.82)' }}>
-          Send us a message, call, or chat on WhatsApp. Looking for a property or planning a trip?
-          Our <Link to="/properties/enquiry" style={{ color: 'var(--green)' }}>property</Link> and{' '}
-          <Link to="/travels/enquiry" style={{ color: 'var(--green)' }}>travel</Link> forms get you a faster, tailored answer.
+          Send us a message, call, or chat on WhatsApp.
         </p>
       </PageHero>
 
@@ -61,7 +58,7 @@ function ContactForm() {
             </SuccessState>
           ) : (
             <form className="form-card" noValidate onSubmit={(e) => f.onSubmit(e, { _subject: `Website enquiry: ${v.division}` })}>
-              <h2 className="mt-0">{isFormworks ? 'Request a formwork quote' : 'Send us a message'}</h2>
+              <h2 className="mt-0">Send us a message</h2>
               <div className="fields" style={{ marginBottom: 20 }}>
                 <Field label="What is this about?" name="division" req error={errors.division} full>
                   <Select {...bind('division')} options={Object.values(DIVISION_OPTIONS)} />
@@ -78,19 +75,7 @@ function ContactForm() {
                 <Field label="Phone / WhatsApp" name="phone" req error={errors.phone}>
                   <input {...bind('phone')} type="tel" autoComplete="tel" />
                 </Field>
-                {isFormworks && (
-                  <Field label="Project location" name="projectLocation" full>
-                    <input {...bind('projectLocation')} placeholder="e.g. Lekki, Lagos" />
-                  </Field>
-                )}
-                <Field
-                  label={isFormworks ? 'Project details' : 'Message'}
-                  name="message"
-                  req
-                  error={errors.message}
-                  full
-                  help={isFormworks ? 'Structure type, floors, approximate slab area, start date. We can request drawings afterwards.' : undefined}
-                >
+                <Field label="Message" name="message" req error={errors.message} full>
                   <textarea {...bind('message')} />
                 </Field>
               </div>

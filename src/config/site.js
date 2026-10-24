@@ -49,6 +49,7 @@ export const divisions = {
 };
 
 export const formspreeIds = {
+  formworks: import.meta.env.VITE_FORMSPREE_FORMWORKS,
   properties: import.meta.env.VITE_FORMSPREE_PROPERTIES,
   travels: import.meta.env.VITE_FORMSPREE_TRAVELS,
   contact: import.meta.env.VITE_FORMSPREE_CONTACT,

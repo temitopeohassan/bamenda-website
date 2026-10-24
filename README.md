@@ -1,6 +1,6 @@
 # Bamenda website
 
-React + Vite rebuild of bamenda.com.ng. Three divisions (Formworks, Properties, Travels). Properties and Travels use enquiry forms instead of listings or packages. Submissions are sent by email through Formspree.
+React + Vite rebuild of bamenda.com.ng. Three divisions (Formworks, Properties, Travels). Each division has its own tailored form: a quote request for Formworks and enquiry forms (instead of listings or packages) for Properties and Travels. Submissions are sent by email through Formspree.
 
 ## Run it
 
@@ -17,19 +17,20 @@ npm run build          # production build in /dist
 |---|---|
 | `/` | Group hub: hero, three division cards, why Bamenda, contact CTA |
 | `/about` | Company story and values (client copy needed) |
-| `/formworks` | Services description, then **Request a quote** (goes to `/contact?division=formworks`) |
+| `/formworks` | Services description, then **Request a quote** (goes to `/formworks/quote`) |
+| `/formworks/quote` | Services needed, project type, floors, area, location, start date, lease duration, drawings, supervision, contact |
 | `/properties` | Description and how it works, then a link to the enquiry form |
 | `/properties/enquiry` | Rent / Lease / Purchase brief: type, location, budget (changes with intent), timing, must-haves, contact |
 | `/travels` | Description and services, then a link to the enquiry form |
 | `/travels/enquiry` | Who's travelling, purpose, destinations, dates, budget, services needed, passports, contact |
-| `/contact` | General contact form (switches to a formwork quote form when Formworks is selected) plus direct contact details |
+| `/contact` | General contact form plus direct contact details |
 
 ## Connect the forms (Formspree)
 
 1. Create a free account at https://formspree.io with Bamenda's email.
-2. Create 3 forms: **Properties**, **Travels**, **Contact**.
+2. Create 4 forms: **Formworks**, **Properties**, **Travels**, **Contact**.
 3. Copy each form ID (the part after `formspree.io/f/`) into `.env`.
-4. Restart `npm run dev`. On your host (Vercel or Netlify), add the same 3 variables in the project's environment settings.
+4. Restart `npm run dev`. On your host (Vercel or Netlify), add the same 4 variables in the project's environment settings.
 
 Each submission arrives with a descriptive subject line, e.g. `Property enquiry: Rent – Apartment / flat (Lagos)`.
 

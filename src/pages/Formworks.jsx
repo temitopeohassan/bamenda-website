@@ -13,11 +13,11 @@ export default function Formworks() {
         crumbs={[{ label: 'Formworks' }]}
       >
         <p className="lead" style={{ color: 'rgba(255,255,255,.82)' }}>
-          We design, supply and lease formwork and scaffolding systems for buildings, roads and
+          We design and lease formwork and scaffolding systems for buildings, roads and
           bridges, with engineering support from first drawing to final pour.
         </p>
         <div className="btn-row">
-          <Link to="/contact?division=formworks" className="btn btn--primary">Request a quote</Link>
+          <Link to="/formworks/quote" className="btn btn--primary">Request a quote</Link>
         </div>
       </PageHero>
 
@@ -33,12 +33,12 @@ export default function Formworks() {
               supply the right equipment for each job.
             </p>
             <ul className="checklist">
-              <li>Formwork and scaffolding for sale or lease</li>
+              <li>Formwork and scaffolding available on lease</li>
               <li>Steel and timber systems, including imported formwork</li>
               <li>Engineering design and on-site technical support</li>
               <li>After-sales service on every project</li>
             </ul>
-            <Link to="/contact?division=formworks" className="btn btn--dark">Discuss your project</Link>
+            <Link to="/formworks/quote" className="btn btn--dark">Discuss your project</Link>
           </div>
           <Media kind="formworks" tall />
         </div>
@@ -121,7 +121,7 @@ export default function Formworks() {
       <CtaBand
         title="Have drawings ready?"
         text="Send us your project details and we’ll come back with a formwork proposal."
-        to="/contact?division=formworks"
+        to="/formworks/quote"
         label="Request a quote"
       />
     </>

@@ -67,7 +67,7 @@ function Footer() {
             <ul>
               <li><Link to="/properties/enquiry">Find a property</Link></li>
               <li><Link to="/travels/enquiry">Plan a trip</Link></li>
-              <li><Link to="/contact?division=formworks">Request a formwork quote</Link></li>
+              <li><Link to="/formworks/quote">Request a formwork quote</Link></li>
               <li><Link to="/about">About us</Link></li>
             </ul>
           </div>

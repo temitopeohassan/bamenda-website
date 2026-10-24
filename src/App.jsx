@@ -3,6 +3,7 @@ import Layout from './components/Layout.jsx';
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import Formworks from './pages/Formworks.jsx';
+import FormworksQuote from './pages/FormworksQuote.jsx';
 import Properties from './pages/Properties.jsx';
 import PropertiesEnquiry from './pages/PropertiesEnquiry.jsx';
 import Travels from './pages/Travels.jsx';
@@ -17,6 +18,7 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="formworks" element={<Formworks />} />
+        <Route path="formworks/quote" element={<FormworksQuote />} />
         <Route path="properties" element={<Properties />} />
         <Route path="properties/enquiry" element={<PropertiesEnquiry />} />
         <Route path="travels" element={<Travels />} />
