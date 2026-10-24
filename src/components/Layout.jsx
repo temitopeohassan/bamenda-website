@@ -14,7 +14,7 @@ function Logo() {
 function Header() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => { setOpen(false); }, [pathname]);
 
   return (
     <header className="header">
@@ -92,7 +92,7 @@ function Footer() {
 
 export default function Layout() {
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
 
   return (
     <>
